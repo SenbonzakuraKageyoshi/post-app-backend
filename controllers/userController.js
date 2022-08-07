@@ -8,14 +8,22 @@ import { generateToken } from '../utils/generateToken.js'
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+const upload = async (req, res) => {
+    try {
+        const {image} = req.files;
+        let fileName = v4() + '.png';
+        image.mv(path.resolve(__dirname, '..', 'static/users', fileName));
+        res.json({message: 'success', data: req.files})
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+// закинуть в отдельный контроллер
+
 const register = async (req, res) => {
     try {
         const {name, surname, email, number, password} = req.body;
-
-        const {img} = req.files;
-        console.log(req.files);
-        let fileName = v4() + '.png';
-        img.mv(path.resolve(__dirname, '..', 'static/users', fileName));
 
         const salt = await bcrypt.genSalt(10);
         const passwordHash = await bcrypt.hash(password, salt);
@@ -34,5 +42,5 @@ const register = async (req, res) => {
 };
 
 export {
-    register
+    register, upload
 }
