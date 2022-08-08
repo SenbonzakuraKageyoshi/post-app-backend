@@ -1,25 +1,6 @@
 import bcrypt from 'bcrypt';
-import {v4} from 'uuid';
-import path from 'path';
-import { fileURLToPath } from 'url';
 import { User } from '../models/models.js';
 import { generateToken } from '../utils/generateToken.js'
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const upload = async (req, res) => {
-    try {
-        const {image} = req.files;
-        let fileName = v4() + '.png';
-        image.mv(path.resolve(__dirname, '..', 'static/users', fileName));
-        res.json({message: 'success', data: req.files})
-    } catch (error) {
-        console.log(error)
-    }
-}
-
-// закинуть в отдельный контроллер
 
 const register = async (req, res) => {
     try {
@@ -42,5 +23,5 @@ const register = async (req, res) => {
 };
 
 export {
-    register, upload
+    register
 }
