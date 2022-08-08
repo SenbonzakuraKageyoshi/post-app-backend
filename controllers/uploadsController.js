@@ -8,12 +8,13 @@ const __dirname = path.dirname(__filename);
 
 const avatarUpload = async (req, res) => {
     try {
+        const {uniqueFileName} = req.body;
         const {image} = req.files;
-        let fileName = v4() + '.png';
-        image.mv(path.resolve(__dirname, '..', 'static/users', fileName));
-        res.json({message: 'success', data: req.files})
+        image.mv(path.resolve(__dirname, '..', 'static/users', uniqueFileName));
+        res.json({message: 'Успешно', fileName: uniqueFileName})  
     } catch (error) {
         console.log(error)
+        res.json({message: 'Ошибка загрузки изображений'})
     }
 };
 
@@ -22,19 +23,21 @@ const postImagesUpload = async (req, res) => {
         const {image} = req.files;
         let fileName = v4() + '.png';
         image.mv(path.resolve(__dirname, '..', 'static/posts', fileName));
-        res.json({message: 'success', data: req.files})
+        res.json({message: 'Успешно'})
     } catch (error) {
         console.log(error)
+        res.json({message: 'Ошибка загрузки изображений'})
     }
 };
 
 const removeAvatar = async (req, res) => {
     try {
         const {fileName} = req.body;
-        console.log(__dirname)
-        fs.unlinkSync()
+        fs.unlinkSync(path.resolve() + `/static/users/${fileName}`)
+        res.json({message: 'Успешно'})
     } catch (error) {
         console.log(error)
+        res.json({message: 'Ошибка удаления аватара'})
     }
 };
 

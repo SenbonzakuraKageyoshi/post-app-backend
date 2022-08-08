@@ -4,12 +4,12 @@ import { generateToken } from '../utils/generateToken.js'
 
 const register = async (req, res) => {
     try {
-        const {name, surname, email, number, password} = req.body;
+        const {name, surname, email, number, password, imageUrl} = req.body;
 
         const salt = await bcrypt.genSalt(10);
         const passwordHash = await bcrypt.hash(password, salt);
 
-        const user = await User.create({name, surname, email, number, avatarUrl: fileName, passwordHash});
+        const user = await User.create({name, surname, email, number, avatarUrl: imageUrl, passwordHash});
 
         const token = generateToken();
 
