@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import { User } from '../models/models.js';
 import { generateToken } from '../utils/generateToken.js'
+import jwt from 'jsonwebtoken';
 
 const register = async (req, res) => {
     try {
@@ -22,6 +23,22 @@ const register = async (req, res) => {
     }
 };
 
+const getMe = async (req, res) => {
+    try {
+        const {token} = req.body;
+        console.log(token)
+        const decoded = jwt.verify(token, 'secret');
+
+        const user = await User.findOne({ id: decoded.id });
+            
+        res.json({...user.dataValues});
+
+    } catch (error) {   
+        console.log(error)
+        res.json({message: 'Ошибка получения данных пользователя'})
+    }
+};
+
 export {
-    register
+    register, getMe
 }

@@ -11,7 +11,7 @@ const avatarUpload = async (req, res) => {
         const {uniqueFileName} = req.body;
         const {image} = req.files;
         image.mv(path.resolve(__dirname, '..', 'static/users', uniqueFileName));
-        res.json({message: 'Успешно', fileName: uniqueFileName})  
+        res.json({message: 'Успешно', fileName: uniqueFileName})    
     } catch (error) {
         console.log(error)
         res.json({message: 'Ошибка загрузки изображений'})
