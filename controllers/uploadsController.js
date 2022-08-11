@@ -18,6 +18,17 @@ const avatarUpload = async (req, res) => {
     }
 };
 
+const removeAvatar = async (req, res) => {
+    try {
+        const {fileName} = req.body;
+        fs.unlinkSync(path.resolve() + `/static/users/${fileName}`)
+        res.json({message: 'Успешно'})
+    } catch (error) {
+        console.log(error)
+        res.json({message: 'Ошибка удаления аватара'})
+    }
+};
+
 const postImagesUpload = async (req, res) => {
     try {
         const {image} = req.files;
@@ -30,18 +41,18 @@ const postImagesUpload = async (req, res) => {
     }
 };
 
-const removeAvatar = async (req, res) => {
+const removePostImg = async (req, res) => {
     try {
         const {fileName} = req.body;
-        fs.unlinkSync(path.resolve() + `/static/users/${fileName}`)
+        fs.unlinkSync(path.resolve() + `/static/posts/${fileName}`)
         res.json({message: 'Успешно'})
     } catch (error) {
         console.log(error)
-        res.json({message: 'Ошибка удаления аватара'})
+        res.json({message: 'Ошибка удаления изображения'})
     }
 };
 
 export {
-    avatarUpload, postImagesUpload, removeAvatar
+    avatarUpload, postImagesUpload, removeAvatar, removePostImg
 }
 

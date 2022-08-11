@@ -15,18 +15,45 @@ const register = async (req, res) => {
         const token = generateToken();
 
         res.json({...user.dataValues, token});
-
     } catch (error) {   
-        console.log(req.files)
         console.log(error)
         res.json({message: 'Ошибка'})
+    }
+};
+
+const login = async (req, res) => {
+    try {
+        const {email, number, password} = req.body;
+
+        const user = await User.findOne({email, number});
+
+        if(!user){
+            return res.status(404).json({message: 'Неверный логин или пароль'});
+        };
+
+        const isValidPass = await bcrypt.compare(password, user.passwordHash);
+
+        if(!isValidPass){
+            return res.status(404).json({message: 'Неверный логин или пароль'});
+        };
+
+        const token = generateToken();
+
+        res.json({...user.dataValues, token});
+    } catch (error) {   
+        console.log(error)
+        res.json({message: 'Ошибка входа'})
     }
 };
 
 const getMe = async (req, res) => {
     try {
         const {token} = req.body;
-        console.log(token)
+
+        if(!token){
+            return res.status(404).json({message: 'Ошибка авторизации'});
+        }
+
         const decoded = jwt.verify(token, 'secret');
 
         const user = await User.findOne({ id: decoded.id });
@@ -35,10 +62,10 @@ const getMe = async (req, res) => {
 
     } catch (error) {   
         console.log(error)
-        res.json({message: 'Ошибка получения данных пользователя'})
+        res.json(null)
     }
 };
 
 export {
-    register, getMe
+    register, login, getMe
 }
