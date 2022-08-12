@@ -22,10 +22,20 @@ const UserPost = sequelize.define('UserPost', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false},
 });
 
+
+const PostLike = sequelize.define('PostLike', {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false},
+});
+
 User.belongsToMany(Post, {through: UserPost});
 Post.belongsToMany(User, {through: UserPost});
-Post.hasMany(Post, {foreignKey: 'UserId'})
+
+UserPost.belongsTo(User, {foreignKey: 'UserId'});
+UserPost.belongsTo(Post, {foreignKey: 'PostId'});
+
+User.belongsToMany(Post, {through: PostLike});
+Post.belongsToMany(User, {through: PostLike});
 
 export {
-    User, Post, UserPost
+    User, Post, UserPost, PostLike
 }

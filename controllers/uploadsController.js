@@ -31,10 +31,10 @@ const removeAvatar = async (req, res) => {
 
 const postImagesUpload = async (req, res) => {
     try {
+        const {uniqueFileName} = req.body;
         const {image} = req.files;
-        let fileName = v4() + '.png';
-        image.mv(path.resolve(__dirname, '..', 'static/posts', fileName));
-        res.json({message: 'Успешно'})
+        image.mv(path.resolve(__dirname, '..', 'static/posts', uniqueFileName));
+        res.json({message: 'Успешно', fileName: uniqueFileName})
     } catch (error) {
         console.log(error)
         res.json({message: 'Ошибка загрузки изображений'})
