@@ -22,7 +22,7 @@ const getAll = async (req, res) => {
             // доделать получение постлайков
             return res.json(posts);
         }else{
-            const posts = await UserPost.findAll({where: { id }}, {include: [{model: User}]});
+            const posts = await UserPost.findAll({where: { id }, include: [{model: User}, {model: Post}]});
             // доделать получение постлайков
             return res.json(posts);
         }
@@ -71,7 +71,7 @@ const dislikePost = async (req, res) => {
 
         res.json(userLikes)
     } catch (error) {
-        console.log(error);
+        console.log(error); 
         res.json({message: 'Не удалость дизлайкнуть пост'})
     }
 };
