@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import { User } from '../models/models.js';
+import { User, UserLike } from '../models/models.js';
 import { generateToken } from '../utils/generateToken.js'
 import jwt from 'jsonwebtoken';
 
@@ -48,19 +48,19 @@ const login = async (req, res) => {
 
 const getMe = async (req, res) => {
     try {
-        const token = req.headers.authorization.split(' ')[1]
+        const token = req.headers.authorization.split(' ')[1];
 
         if(!token){
             return res.status(404).json(null);
         }
 
         const {id} = jwt.verify(token, '1a2b-3c4d-5e6f-7g8h');
+
+        const user = await User.findOne({ where: {id}});
+        const userLikes = await UserLike.findAll({ where: {UserId: id}});
         console.log(id)
 
-        const user = await User.findOne({ where: {id} });
-        console.log(user)
-
-        res.json(user.dataValues);
+        res.json({...user.dataValues, likes: userLikes});
 
     } catch (error) {   
         console.log(error)

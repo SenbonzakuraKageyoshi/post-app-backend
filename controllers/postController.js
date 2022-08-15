@@ -1,4 +1,4 @@
-import { Post, User, UserPost, PostLike } from "../models/models.js";
+import { Post, User, UserPost, UserLike } from "../models/models.js";
 
 const create = async (req, res) => {
     try {
@@ -52,15 +52,30 @@ const likePost = async (req, res) => {
     try {
         const {postId, userId} = req.body;
 
-        const postLike = await PostLike.create({UserId: userId, PostId: postId})
+        const userLikes = await UserLike.create({UserId: userId, PostId: postId})
+        const like = await Post.increment({likes: 1}, { where: { id: postId } })
 
-        res.json(postLike)
+        res.json(userLikes)
     } catch (error) {
         console.log(error);
         res.json({message: 'Не удалость лайкнуть пост'})
     }
-}
+};
+
+const dislikePost = async (req, res) => {
+    try {
+        const {postId, userId} = req.body;
+
+        const userLikes = await UserLike.destroy({where: { PostId: postId }})
+        const like = await Post.decrement({likes: 1}, { where: { id: postId } })
+
+        res.json(userLikes)
+    } catch (error) {
+        console.log(error);
+        res.json({message: 'Не удалость дизлайкнуть пост'})
+    }
+};
 
 export {
-    create, getAll, getPost, likePost
+    create, getAll, getPost, likePost, dislikePost
 }
