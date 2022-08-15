@@ -16,14 +16,18 @@ const create = async (req, res) => {
 
 const getAll = async (req, res) => {
     try {
-        const { id } = req.body;
+
+        let { id, page } = req.body;
+
+        page = page || 1;
+        const limit = 9;
+        let offset = page * limit - limit;
+
         if(!id){
-            const posts = await UserPost.findAll({include: [{model: User}, {model: Post}]});
-            // доделать получение постлайков
+            const posts = await UserPost.findAll({include: [{model: User}, {model: Post}], limit, offset});
             return res.json(posts);
         }else{
             const posts = await UserPost.findAll({where: { id }, include: [{model: User}, {model: Post}]});
-            // доделать получение постлайков
             return res.json(posts);
         }
     } catch (error) {
@@ -34,9 +38,7 @@ const getAll = async (req, res) => {
 
 const getPost = async (req, res) => {
     try {
-        const { id } = req.body;
-
-        let liked = false;
+        const { id } = req.query;
 
         const post = await UserPost.findAll({where: { id }}, {include: [{model: User}, {model: Post}]});
 
