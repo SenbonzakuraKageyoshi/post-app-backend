@@ -16,23 +16,35 @@ const create = async (req, res) => {
 
 const getAll = async (req, res) => {
     try {
+        let { page } = req.body;
 
+        page = page || 1;
+        const limit = 9;
+        let offset = page * limit - limit;
+
+        const posts = await UserPost.findAll({include: [{model: User}, {model: Post}], limit, offset});
+        return res.json(posts);
+        
+    } catch (error) {
+        console.log(error);
+        res.json({message: 'Ошибка получения постов'})
+    }
+};
+
+const getUserPosts = async (req, res) => {
+    try {
         let { id, page } = req.body;
 
         page = page || 1;
         const limit = 9;
         let offset = page * limit - limit;
 
-        if(!id){
-            const posts = await UserPost.findAll({include: [{model: User}, {model: Post}], limit, offset});
-            return res.json(posts);
-        }else{
-            const posts = await UserPost.findAll({where: { id }, include: [{model: User}, {model: Post}]});
-            return res.json(posts);
-        }
+        const posts = await UserPost.findAll({where: {UserId: id}, include: [{model: User}, {model: Post}], limit, offset});
+        return res.json(posts);
+        
     } catch (error) {
         console.log(error);
-        res.json({message: 'Ошибка получения постов'})
+        res.json({message: 'Ошибка получения постов пользователя'})
     }
 };
 
@@ -79,5 +91,5 @@ const dislikePost = async (req, res) => {
 };
 
 export {
-    create, getAll, getPost, likePost, dislikePost
+    create, getAll, getPost, likePost, dislikePost, getUserPosts
 }
