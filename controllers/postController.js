@@ -19,12 +19,14 @@ const getAll = async (req, res) => {
         let { page } = req.body;
 
         page = page || 1;
-        const limit = 9;
+        const limit = 3;
+        // верни лимит на 9, сейчас он 3 для тестов
         let offset = page * limit - limit;
 
         const posts = await UserPost.findAll({include: [{model: User}, {model: Post}], limit, offset});
-        return res.json(posts);
-        
+        const postsLength = await UserPost.findAll();
+
+        return res.set('x-total-count', postsLength.length).set('Access-Control-Expose-Headers', 'X-Total-Count').json(posts);
     } catch (error) {
         console.log(error);
         res.json({message: 'Ошибка получения постов'})
@@ -40,8 +42,9 @@ const getUserPosts = async (req, res) => {
         let offset = page * limit - limit;
 
         const posts = await UserPost.findAll({where: {UserId: id}, include: [{model: User}, {model: Post}], limit, offset});
-        return res.json(posts);
-        
+        const postsLength = await UserPost.findAll();
+
+        return res.set('x-total-count', postsLength.length).set('Access-Control-Expose-Headers', 'X-Total-Count').json(posts);   
     } catch (error) {
         console.log(error);
         res.json({message: 'Ошибка получения постов пользователя'})

@@ -20,8 +20,8 @@ const Post = sequelize.define('Post', {
 });
 
 const UserPost = sequelize.define('UserPost', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false},
-});
+        id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false},
+    });
 
 
 const UserLike = sequelize.define('UserLike', {
