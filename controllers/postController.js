@@ -53,9 +53,9 @@ const getUserPosts = async (req, res) => {
 
 const getPost = async (req, res) => {
     try {
-        const { id } = req.query;
+        const { id } = req.params;
 
-        const post = await UserPost.findAll({where: { id }}, {include: [{model: User}, {model: Post}]});
+        const post = await UserPost.findOne({where: { PostId: id }, include: [{model: User}, {model: Post}]});
 
         return res.json(post);
         
