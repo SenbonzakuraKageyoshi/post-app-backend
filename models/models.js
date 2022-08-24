@@ -16,6 +16,7 @@ const Post = sequelize.define('Post', {
     title: {type: DataTypes.STRING, allowNull: false},
     text: {type: DataTypes.STRING, allowNull: false},
     likes: {type: DataTypes.INTEGER, defaultValue: 0, allowNull: false},
+    views: {type: DataTypes.INTEGER, defaultValue: 0, allowNull: false},
     postImgUrl: {type: DataTypes.STRING},
 });
 
