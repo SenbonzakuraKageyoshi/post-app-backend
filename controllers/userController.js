@@ -25,7 +25,7 @@ const login = async (req, res) => {
     try {
         const {email, number, password} = req.body;
 
-        const user = await User.findOne({email, number});
+        const user = await User.findOne({where: {email, number}});
 
         if(!user){
             return res.status(404).json({message: 'Неверный логин или пароль'});
