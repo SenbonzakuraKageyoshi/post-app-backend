@@ -42,11 +42,17 @@ const getAll = async (req, res) => {
 
 const getUserPosts = async (req, res) => {
     try {
-        let { id, page } = req.body;
+        let { id, page, isLength } = req.body;
 
         page = page || 1;
         const limit = 16;
         let offset = page * limit - limit;
+
+        if(isLength){
+            const posts = await UserPost.findAll({where: {UserId: id}, include: [{model: User}, {model: Post}]});
+
+            return res.json(posts.length);
+        }
 
         const posts = await UserPost.findAll({where: {UserId: id}, include: [{model: User}, {model: Post}], limit, offset});
         const postsLength = await UserPost.findAll();
