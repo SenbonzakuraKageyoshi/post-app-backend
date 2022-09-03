@@ -19,7 +19,7 @@ const getAll = async (req, res) => {
         let { page } = req.body;
 
         page = page || 1;
-        const limit = 16;
+        const limit = 3;
 
         let offset = page * limit - limit;
 
