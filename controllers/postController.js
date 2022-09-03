@@ -55,7 +55,6 @@ const getUserPosts = async (req, res) => {
         }
 
         const posts = await UserPost.findAll({where: {UserId: id}, include: [{model: User}, {model: Post}], limit, offset});
-        const postsLength = await UserPost.findAll();
 
         const postsWithoutPrivateInfo = posts.map((post) => {
             post.User.email = null;
@@ -64,7 +63,7 @@ const getUserPosts = async (req, res) => {
             return post;
         })
 
-        return res.set('x-total-count', postsLength.length).set('Access-Control-Expose-Headers', 'X-Total-Count').json(postsWithoutPrivateInfo);   
+        return res.set('x-total-count', postsWithoutPrivateInfo.length).set('Access-Control-Expose-Headers', 'X-Total-Count').json(postsWithoutPrivateInfo);   
     } catch (error) {
         console.log(error);
         res.json({message: 'Ошибка получения постов пользователя'})
