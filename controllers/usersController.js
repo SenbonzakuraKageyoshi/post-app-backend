@@ -15,7 +15,7 @@ const getAllUsers = (async (req, res) => {
             user.passwordHash = null;
             user.number = null;
             return user;
-        })
+        });
 
         res.json(postsWithoutPrivateInfo)
 
@@ -25,6 +25,24 @@ const getAllUsers = (async (req, res) => {
     }
 });
 
+const getUser = async (req, res) => {
+    try {
+        const { id } = req.body;
+
+        const user = await User.findOne({ where: {id}});
+
+        user.email = null;
+        user.number = null;
+        user.passwordHash = null;
+
+        res.json({...user.dataValues});
+    } catch (error) {   
+        console.log(error)
+        res.json(null)
+    }
+};
+
+
 export {
-    getAllUsers
+    getAllUsers, getUser
 }

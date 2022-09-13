@@ -21,11 +21,15 @@ const Post = sequelize.define('Post', {
 });
 
 const UserPost = sequelize.define('UserPost', {
-        id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false},
-    });
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false},
+});
 
 
 const UserLike = sequelize.define('UserLike', {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false},
+});
+
+const UserSubscribe = sequelize.define('UserLike', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false},
 });
 
@@ -41,6 +45,9 @@ Post.belongsToMany(User, {through: UserLike});
 UserLike.belongsTo(User, {foreignKey: 'UserId'});
 UserLike.belongsTo(Post, {foreignKey: 'PostId'});
 
+// User.belongsToMany(User, { as: 'children', foreignKey: 'subscriberId', through: UserSubscribe});
+// User.belongsToMany(User, { as: 'parent', foreignKey: 'userId', through: UserSubscribe });
+
 export {
-    User, Post, UserPost, UserLike
+    User, Post, UserPost, UserLike, UserSubscribe
 }
