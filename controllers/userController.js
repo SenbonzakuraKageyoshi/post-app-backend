@@ -56,10 +56,12 @@ const getMe = async (req, res) => {
             return res.status(404).json(null);
         }
 
-        const {id} = jwt.verify(token, '1a2b-3c4d-5e6f-7g8h');
+        const { id } = jwt.verify(token, '1a2b-3c4d-5e6f-7g8h');
 
-        const user = await User.findOne({ where: {id}});
+        const user = await User.findOne({ where: { id }});
         const userLikes = await UserLike.findAll({ where: {UserId: id}});
+
+        console.log('LIKESSSSSSS', userLikes)
 
         res.json({...user.dataValues, likes: userLikes});
 
