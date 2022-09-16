@@ -61,8 +61,6 @@ const getMe = async (req, res) => {
         const user = await User.findOne({ where: { id }});
         const userLikes = await UserLike.findAll({ where: {UserId: id}});
 
-        console.log('LIKESSSSSSS', userLikes)
-
         res.json({...user.dataValues, likes: userLikes});
 
     } catch (error) {   

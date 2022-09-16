@@ -35,11 +35,16 @@ const unSubscribe = async (req, res) => {
 
 const getSubscribers = async (req, res) => {
     try {
-        let { id, page } = req.body;
+        let { id, page, getAll } = req.body;
 
         page = page || 1;
         const limit = 16;
         let offset = page * limit - limit;
+
+        if(getAll){
+            const subscibers = await UserSubscribe.findAll({where: { UserId: id }, include: [{model: Subscriber}]});
+            return res.json(subscibers)
+        }
 
         const subscibers =  await UserSubscribe.findAll({where: { UserId: id }, limit, offset, include: [{model: Subscriber}]});  
 
