@@ -14,6 +14,10 @@ const User = sequelize.define('User', {
 
 const Subscriber = sequelize.define('Subscriber', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false},
+    UserSubscriberId:{type: DataTypes.INTEGER, allowNull: false},
+    name: {type: DataTypes.STRING, allowNull: false},
+    surname: {type: DataTypes.STRING, allowNull: false},
+    avatarUrl: {type: DataTypes.STRING}
 });
    
 const Post = sequelize.define('Post', {
