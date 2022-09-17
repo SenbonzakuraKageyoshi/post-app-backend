@@ -5,19 +5,20 @@ const getAllUsers = (async (req, res) => {
         let { page } = req.body;
 
         page = page || 1;
-        const limit = 16;
+        const limit = 25;
         let offset = page * limit - limit;
 
         const users = await User.findAll({limit, offset});
+        const usersLength = await User.findAll();
 
-        const postsWithoutPrivateInfo = users.map((user) => {
+        const usersWithoutPrivateInfo = users.map((user) => {
             user.email = null;
             user.passwordHash = null;
             user.number = null;
             return user;
         });
 
-        res.json(postsWithoutPrivateInfo)
+        return res.set('x-total-count', usersLength.length).set('Access-Control-Expose-Headers', 'X-Total-Count').json(usersWithoutPrivateInfo);
 
     } catch (error) {
         console.log(error)

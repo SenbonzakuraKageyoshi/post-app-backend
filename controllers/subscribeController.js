@@ -38,7 +38,7 @@ const getSubscribers = async (req, res) => {
         let { id, page, getAll } = req.body;
 
         page = page || 1;
-        const limit = 16;
+        const limit = 25;
         let offset = page * limit - limit;
 
         if(getAll){
@@ -47,8 +47,9 @@ const getSubscribers = async (req, res) => {
         }
 
         const subscibers =  await UserSubscribe.findAll({where: { UserId: id }, limit, offset, include: [{model: Subscriber}]});  
+        const subscibersLength =  await UserSubscribe.findAll(); 
 
-        res.json(subscibers)
+        return res.set('x-total-count', subscibersLength.length).set('Access-Control-Expose-Headers', 'X-Total-Count').json(subscibers);
     } catch (error) {
         console.log(error)
         res.json({message: 'Не удалось получить подписчиков'})

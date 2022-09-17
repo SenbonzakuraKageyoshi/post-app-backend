@@ -19,7 +19,7 @@ const getAll = async (req, res) => {
         let { page } = req.body;
 
         page = page || 1;
-        const limit = 3;
+        const limit = 25;
 
         let offset = page * limit - limit;
 
@@ -45,7 +45,7 @@ const getUserPosts = async (req, res) => {
         let { id, page, isLength } = req.body;
 
         page = page || 1;
-        const limit = 16;
+        const limit = 25;
         let offset = page * limit - limit;
 
         if(isLength){
